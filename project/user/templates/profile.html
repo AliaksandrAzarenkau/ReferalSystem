@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load rest_framework %}
+{% load bootstrap5 %}
+
+{% block content %}
+
+{% for message in messages %}
+<div class="alert alert-success" role="alert">
+    {{message}}
+</div>
+{% endfor %}
+
+<div class="container my-5 py-5">
+    <div class="row">
+        <div class="row justify-content-md-center">
+            <div class="col-lg-6">
+                <div class="card" id="basic-info">
+                    <div class="card-header mt-0">
+                        <h5>Activate invite code</h5>
+                    </div>
+                    <div class="card-body pt-0">
+                        <form role="form" method="POST" autocomplete="off">
+                            <div class='row mt-2'>
+                                {% csrf_token %}
+                                <p>{{ message }}</p>
+                                <input name="invite_code">
+                            </div>
+                            <button class="btn btn-outline-success btn-md float-end mt-2 mb-0 mx-2" type="submit">
+                                Activate
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item">Your phone number: {{ phone_number }}</li>
+        <li class="list-group-item">Your invite code: {{ own_invite_code }}</li>
+        <li class="list-group-item">Activated invite code: {{ activated_invite_code }}</li>
+        <li class="list-group-item">Who activated your code: {{ activated_users }}</li>
+    </ul>
+</div>
+
+{% endblock %}

@@ -1,0 +1,346 @@
+{
+	"info": {
+		"_postman_id": "8617fce8-279f-4a25-ac94-e253664e19df",
+		"name": "RequestsCollection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "32278209"
+	},
+	"item": [
+		{
+			"name": "no_phone_auth_code_request",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"phone_number\":  \"\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://alexandrazarenkov.pythonanywhere.com/api/user_login",
+					"protocol": "https",
+					"host": [
+						"alexandrazarenkov",
+						"pythonanywhere",
+						"com"
+					],
+					"path": [
+						"api",
+						"user_login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "auth_code_request",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();\r",
+							"pm.environment.set(\"auth\", jsonData.authentication_code);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"phone_number\":  \"+7 (800) 250-25-25\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://alexandrazarenkov.pythonanywhere.com/api/user_login",
+					"protocol": "https",
+					"host": [
+						"alexandrazarenkov",
+						"pythonanywhere",
+						"com"
+					],
+					"path": [
+						"api",
+						"user_login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "wrong_auth_code_send",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"authentication_code\": \"aaaa\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://alexandrazarenkov.pythonanywhere.com/api/user_auth",
+					"protocol": "https",
+					"host": [
+						"alexandrazarenkov",
+						"pythonanywhere",
+						"com"
+					],
+					"path": [
+						"api",
+						"user_auth"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "proper_auth_code_send",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var xsrfCookie = postman.getResponseCookie(\"csrftoken\");\r",
+							"postman.setEnvironmentVariable('csrftoken', xsrfCookie.value);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"authentication_code\": \"{{auth}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://alexandrazarenkov.pythonanywhere.com/api/user_auth",
+					"protocol": "https",
+					"host": [
+						"alexandrazarenkov",
+						"pythonanywhere",
+						"com"
+					],
+					"path": [
+						"api",
+						"user_auth"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get_profile",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-CSRFToken",
+						"value": "{{csrftoken}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://alexandrazarenkov.pythonanywhere.com/api/user_profile",
+					"protocol": "https",
+					"host": [
+						"alexandrazarenkov",
+						"pythonanywhere",
+						"com"
+					],
+					"path": [
+						"api",
+						"user_profile"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "send_wrong_code",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-CSRFToken",
+						"value": "{{csrftoken}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"invite_code\":\"beWD1q\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://alexandrazarenkov.pythonanywhere.com/api/user_profile",
+					"protocol": "http",
+					"host": [
+						"alexandrazarenkov",
+						"pythonanywhere",
+						"com"
+					],
+					"path": [
+						"api",
+						"user_profile"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "send_own_code",
+			"protocolProfileBehavior": {
+				"followOriginalHttpMethod": false,
+				"insecureHTTPParser": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-CSRFToken",
+						"value": "{{csrftoken}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"invite_code\":\"ZpKPip\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://alexandrazarenkov.pythonanywhere.com/api/user_profile",
+					"protocol": "http",
+					"host": [
+						"alexandrazarenkov",
+						"pythonanywhere",
+						"com"
+					],
+					"path": [
+						"api",
+						"user_profile"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "send_proper_code",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-CSRFToken",
+						"value": "{{csrftoken}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"invite_code\":\"TEOjAV\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://alexandrazarenkov.pythonanywhere.com/api/user_profile",
+					"protocol": "http",
+					"host": [
+						"alexandrazarenkov",
+						"pythonanywhere",
+						"com"
+					],
+					"path": [
+						"api",
+						"user_profile"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "activated_code_send",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-CSRFToken",
+						"value": "{{csrftoken}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"invite_code\":\"TEOjAV\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://alexandrazarenkov.pythonanywhere.com/api/user_profile",
+					"protocol": "http",
+					"host": [
+						"alexandrazarenkov",
+						"pythonanywhere",
+						"com"
+					],
+					"path": [
+						"api",
+						"user_profile"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

@@ -1,0 +1,20 @@
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+
+#Postgres
+DB_USER = os.environ.get('DB_USER')
+DB_PASS = os.environ.get('DB_PASS')
+DB_HOST = os.environ.get('DB_HOST')
+DB_PORT = os.environ.get('DB_PORT')
+DB_NAME = os.environ.get('DB_NAME')
+
+#Django
+SECRET_KEY = os.environ.get('SECRET_KEY')
+
+#Authentication request code length
+AUTH_CODE_LENGTH = 4
+
+#Invite code length
+INVITE_CODE_LENGTH = 6
